@@ -4,4 +4,12 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+    <servlet-name>AddMembershipServlet</servlet-name>
+    <servlet-class>AddMembershipServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddMembershipServlet</servlet-name>
+    <url-pattern>/addMembership</url-pattern>
+  </servlet-mapping>
 </web-app>
