@@ -94,7 +94,7 @@ function goToReport() {
 
 function goToTransaction() {
     // Redirect to Transaction page
-    window.location.href = "transaction.jsp";
+    window.location.href = "adminTransactions.jsp";
 }
 
 function logout() {

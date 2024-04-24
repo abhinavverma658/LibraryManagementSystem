@@ -86,7 +86,7 @@ function goToReports() {
 
 function goToTransactions() {
     // Redirect to Transactions page
-    window.location.href = "transactions.jsp";
+    window.location.href = "userTransactions.jsp";
 }
 
 function goBack() {
