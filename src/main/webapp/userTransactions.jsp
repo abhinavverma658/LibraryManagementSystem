@@ -333,7 +333,7 @@ function goBack() {
 }
 
 function logout() {
-    window.location.href = "logout.jsp";
+    window.location.href = "userLogin.jsp";
 
 }
 
