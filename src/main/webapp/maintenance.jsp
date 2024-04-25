@@ -478,7 +478,7 @@
     });
 
     function logout() {
-        window.location.href = "logout.jsp";
+        window.location.href = "adminlogout.jsp";
     }
 
     function showAddMembership(){

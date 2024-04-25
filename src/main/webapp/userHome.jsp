@@ -96,7 +96,7 @@ function goBack() {
 
 function logout() {
     // Redirect to Logout page or invalidate session
-    window.location.href = "logout.jsp";
+    window.location.href = "userlogout.jsp";
 }
 </script>
 

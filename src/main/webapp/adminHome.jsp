@@ -99,7 +99,7 @@ function goToTransaction() {
 
 function logout() {
     // Redirect to Logout page or invalidate session
-    window.location.href = "logout.jsp";
+    window.location.href = "adminlogout.jsp";
 }
 function goBack() {
     // Redirect to Logout page or invalidate session
