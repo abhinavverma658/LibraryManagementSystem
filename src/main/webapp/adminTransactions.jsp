@@ -9,6 +9,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
 </head>
 <body>
 
@@ -146,7 +150,7 @@ try {
                         </div>
                         <div class="form-group">
                             <label>Return Date:</label>
-                            <input type="text" class="form-control datepicker" id="returnDate" placeholder="Select Return Date">
+                            <input type="text" class="form-control datepicker" id="issueBookreturnDate" placeholder="Select Return Date">
                         </div>
                         <div class="form-group">
                             <label>Remarks:</label>
@@ -272,9 +276,18 @@ try {
 <script>
 // Datepicker Initialization
 $(document).ready(function(){
+    // Get the current date
+    var currentDate = new Date();
+
+    // Calculate the date 15 days from now
+    var futureDate = new Date();
+    futureDate.setDate(currentDate.getDate() + 15);
+
     $('.datepicker').datepicker({
         format: 'dd/mm/yyyy',
-        autoclose: true
+        autoclose: true,
+        startDate: currentDate, // Set the start date
+        endDate: futureDate // Set the end date
     });
 });
 

@@ -81,7 +81,7 @@
 <script>
 function goToReports() {
     // Redirect to Reports page
-    window.location.href = "reports.jsp";
+    window.location.href = "userReports.jsp";
 }
 
 function goToTransactions() {

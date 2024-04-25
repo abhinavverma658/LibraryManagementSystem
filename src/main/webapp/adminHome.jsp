@@ -89,7 +89,7 @@ function goToMaintenance() {
 
 function goToReport() {
     // Redirect to Report page
-    window.location.href = "report.jsp";
+    window.location.href = "adminreports.jsp";
 }
 
 function goToTransaction() {
