@@ -14,6 +14,9 @@
 <body>
 
 <div class="container mt-5">
+<div class="text-right mb-2">
+            <button class="btn btn-success" onclick="location.href='adminHome.jsp';">Home</button>
+        </div>
     <div class="row">
         <!-- Membership -->
         <div class="col-md-4">
@@ -26,60 +29,60 @@
         <div class="col-md-8">
             <div class="tab-content">
                 <!-- Add Membership Tab -->
-                <div class="tab-pane fade" id="addMembershipTab">
+                <div class="tab-pane fade" id="addMembershipTab" onsubmit="validateForm()">
                     <!-- ... (same as before) ... -->
                     <h4>Add Membership</h4>
                                         <form id="addMembershipForm" action="addMembership.jsp">
                                             <div class="form-group">
                                                 <label>First Name:</label>
-                                                <input type="text" class="form-control" id="firstName">
+                                                <input type="text" class="form-control" id="firstName" required>
                                             </div>
                                             <div class="form-group">
                                                 <label>Last Name:</label>
-                                                <input type="text" class="form-control" id="lastName">
+                                                <input type="text" class="form-control" id="lastName" required>
                                             </div>
                                             <div class="form-group">
                                                 <label>Contact No.:</label>
-                                                <input type="text" class="form-control" id="contactNo">
+                                                <input type="text" class="form-control" id="contactNo" required>
                                             </div>
                                             <div class="form-group">
                                                 <label>Contact Address:</label>
-                                                <input type="text" class="form-control" id="contactAddress">
+                                                <input type="text" class="form-control" id="contactAddress"required>
                                             </div>
                                             <div class="form-group">
                                                 <label>Adhar No:</label>
-                                                <input type="text" class="form-control" id="adharNo">
+                                                <input type="text" class="form-control" id="adharNo" name="adharNo"required>
                                             </div>
                                             <div class="form-group">
                                                 <label>Start Date:</label>
-                                                <input type="text" class="form-control datepicker" id="startDate">
+                                                <input type="text" class="form-control datepicker" id="startDate" required>
                                             </div>
                                             <div class="form-group">
                                                 <label>End Date:</label>
-                                                <input type="text" class="form-control datepicker" id="endDate">
+                                                <input type="text" class="form-control datepicker" id="endDate" required>
                                             </div>
                                             <div class="form-group">
                                                 <label>Membership:</label>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="membershipType" id="sixMonths" value="Six Months" checked>
+                                                    <input class="form-check-input" type="radio" name="membershipType" id="sixMonths" value="Six Months" required checked >
                                                     <label class="form-check-label" for="sixMonths">
                                                         Six Months
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="membershipType" id="oneYear" value="One Year">
+                                                    <input class="form-check-input" type="radio" name="membershipType" id="oneYear" value="One Year" required>
                                                     <label class="form-check-label" for="oneYear">
                                                         One Year
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="membershipType" id="twoYears" value="Two Years">
+                                                    <input class="form-check-input" type="radio" name="membershipType" id="twoYears" value="Two Years" required>
                                                     <label class="form-check-label" for="twoYears">
                                                         Two Years
                                                     </label>
                                                     </div>
                                                     </div>
-                                                    <button type="button" class="btn btn-success" onclick="confirmAddMembership()">Confirm</button>
+                                                    <button type="submit" class="btn btn-success" onclick="confirmAddMembership()">Confirm</button>
                                                     <button type="button" class="btn btn-danger" onclick="cancelAddMembership()">Cancel</button>
                                                     </form>
                 </div>
@@ -240,6 +243,7 @@
                     } catch(Exception e) {
                     e.printStackTrace();
                     }
+
                     %>
                                                 <!-- Serial numbers will be fetched from database -->
                                                 <%-- Include Java code to fetch serial numbers from database here --%>
@@ -330,19 +334,44 @@
             <form action="updateUser.jsp" method="post">
                 <!-- Form fields for updating user -->
                 <div class="form-group">
-                    <label>User ID:</label>
-                    <input type="text" class="form-control" name="userID" required>
-                </div>
-                <div class="form-group">
-                    <label>New Contact No.:</label>
-                    <input type="text" class="form-control" name="newContactNo" required>
-                </div>
-                <div class="form-group">
-                    <label>New Contact Address:</label>
-                    <input type="text" class="form-control" name="newContactAddress" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Confirm</button>
-                <button type="button" class="btn btn-secondary" onclick="cancelUpdateUser()">Cancel</button>
+                                   <label>New User/Existing User:</label>
+                                   <div class="form-check">
+                                       <input class="form-check-input" type="radio" name="userType" id="newUser" value="New User" checked>
+                                       <label class="form-check-label" for="newUser">
+                                           New User
+                                       </label>
+                                   </div>
+                                   <div class="form-check">
+                                       <input class="form-check-input" type="radio" name="userType" id="existingUser" value="Existing User">
+                                       <label class="form-check-label" for="existingUser">
+                                           Existing User
+                                       </label>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label>Name:</label>
+                                   <input type="text" class="form-control" name="userName" required>
+                               </div>
+                               <div class="form-group">
+                                   <label>Status:</label>
+                                   <div class="form-check">
+                                       <input class="form-check-input" type="checkbox" name="status" id="active" value="Active">
+                                       <label class="form-check-label" for="active">
+                                           Active
+                                       </label>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label>Admin:</label>
+                                   <div class="form-check">
+                                       <input class="form-check-input" type="checkbox" name="isAdmin" id="admin" value="Admin">
+                                       <label class="form-check-label" for="admin">
+                                           Admin
+                                       </label>
+                                   </div>
+                               </div>
+                               <button type="submit" class="btn btn-primary" onclick="confirmAddUser()">Confirm</button>
+                               <button type="button" class="btn btn-secondary" onclick="cancelAddUser()">Cancel</button>
             </form>
         </div>
     </div>
@@ -479,25 +508,10 @@
     }
 
     function confirmAddMembership() {
-      event.preventDefault(); // Prevent default form submission
-
-      // Get form data
-      var firstName = document.getElementById("firstName").value;
-      var lastName = document.getElementById("lastName").value;
-      var contactNo = document.getElementById("contactNo").value;
-      var contactAddress = document.getElementById("contactAddress").value;
-      var adharNo = document.getElementById("adharNo").value;
-      var startDate = document.getElementById("startDate").value;
-      var endDate = document.getElementById("endDate").value;
-      var membershipType = document.querySelector('input[name="membershipType"]:checked').value;  // Get checked radio button value
-
-      // Construct URL with query parameters
-      var url = "addMembership.jsp?firstName=" + firstName + "&lastName=" + lastName + "&contactNo=" + contactNo + "&contactAddress=" + contactAddress + "&adharNo=" + adharNo + "&startDate=" + startDate + "&endDate=" + endDate + "&membershipType=" + membershipType;
-
-      // Redirect to addMembership.jsp with the URL
-      window.location.href = url;
+        if (validateForm()) {
+            document.getElementById('addMembershipForm').submit();
+        }
     }
-
 
     function cancelUpdateMembership() {
         // Reset form fields
@@ -511,7 +525,59 @@
             // Reset form fields
             $('#addMembershipForm')[0].reset();
         }
-</script>
+            function validateForm() {
+                var firstName = document.getElementById('firstName').value;
+                var lastName = document.getElementById('lastName').value;
+                var contactNo = document.getElementById('contactNo').value;
+                var contactAddress = document.getElementById('contactAddress').value;
+                var adharNo = document.getElementById('adharNo').value;
+                var startDate = document.getElementById('startDate').value;
+                var endDate = document.getElementById('endDate').value;
+                var membershipType = document.querySelector('input[name="membershipType"]:checked');
 
+                if (firstName === "") {
+                    alert("First Name is required");
+                    return false; // Prevent form submission
+                }
+
+                if (lastName === "") {
+                    alert("Last Name is required");
+                    return false; // Prevent form submission
+                }
+
+                if (contactNo === "") {
+                    alert("Contact No. is required");
+                    return false; // Prevent form submission
+                }
+
+                if (contactAddress === "") {
+                    alert("Contact Address is required");
+                    return false; // Prevent form submission
+                }
+
+                if (adharNo === "") {
+                    alert("Adhar No. is required");
+                    return false; // Prevent form submission
+                }
+
+                if (startDate === "") {
+                    alert("Start Date is required");
+                    return false; // Prevent form submission
+                }
+
+                if (endDate === "") {
+                    alert("End Date is required");
+                    return false; // Prevent form submission
+                }
+
+                if (!membershipType) {
+                    alert("Membership Type is required");
+                    return false; // Prevent form submission
+                }
+
+                return true; // Allow form submission
+            }
+
+</script>
 </body>
 </html>

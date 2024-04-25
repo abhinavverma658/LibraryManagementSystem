@@ -54,6 +54,9 @@ try {
 %>
 
 <div class="container mt-5">
+<div class="text-right mb-2">
+            <button class="btn btn-success" onclick="location.href='adminHome.jsp';">Home</button>
+        </div>
     <div class="row">
         <!-- Left Side Tabs -->
         <div class="col-md-3">
