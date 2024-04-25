@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.Connection, java.sql.DriverManager, java.sql.Statement, java.sql.ResultSet" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,7 +61,7 @@
                                             <div class="form-group">
                                                 <label>Membership:</label>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="membershipType" id="sixMonths" value="Six Months">
+                                                    <input class="form-check-input" type="radio" name="membershipType" id="sixMonths" value="Six Months" checked>
                                                     <label class="form-check-label" for="sixMonths">
                                                         Six Months
                                                     </label>
@@ -103,7 +104,7 @@
                         <div class="form-group">
                             <label>Membership Extn:</label>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="membershipExtn" id="sixMonthsUpdate" value="Six Months">
+                                <input class="form-check-input" type="radio" name="membershipExtn" id="sixMonthsUpdate" value="Six Months"  checked>
                                 <label class="form-check-label" for="sixMonthsUpdate">
                                     Six Months
                                 </label>
@@ -145,61 +146,277 @@
         </div>
     </div>
     <br>
+    <!--Books and Movies Section-->
     <div class="row">
         <!-- Book/Movies -->
         <div class="col-md-4">
             <h4>Books/Movies</h4>
-            <button class="btn btn-success mb-2" onclick="showAddBook_Movies()">Add</button>
-            <button class="btn btn-warning mb-2" onclick="showUpdateBook_Movies()">Update</button>
+            <button class="btn btn-success mb-2" onclick="showAddBookMoviesForm()">Add</button>
+            <button class="btn btn-warning mb-2" onclick="showUpdateBookMoviesForm()">Update</button>
         </div>
+
         <!-- Add Book/Movies Form -->
         <div class="col-md-8">
             <div id="addBookMoviesForm" style="display:none;">
                 <h4>Add Book/Movies</h4>
                 <form action="addBookMovies.jsp" method="post">
+                    <!-- Form fields for adding book/movies -->
                     <div class="form-group">
-                        <label>Book/Movies:</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="bookOrMovie" id="book" value="Book" checked>
-                            <label class="form-check-label" for="book">
-                                Book
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="bookOrMovie" id="movie" value="Movie">
-                            <label class="form-check-label" for="movie">
-                                Movie
-                            </label>
-                        </div>
+                    <label>Book/Movies:</label>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="bookOrMovie" id="book" value="Book" checked>
+                    <label class="form-check-label" for="book">
+                    Book
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="bookOrMovie" id="movie" value="Movie">
+                    <label class="form-check-label" for="movie">
+                    Movie
+                    </label>
+                    </div>
                     </div>
                     <div class="form-group">
-                        <label>Book/Movie Name:</label>
-                        <input type="text" class="form-control" name="bookMovieName" required>
+                    <label>Book/Movie Name:</label>
+                    <input type="text" class="form-control" name="bookMovieName" required>
                     </div>
                     <div class="form-group">
-                        <label>Date of Procurement:</label>
-                        <input type="text" class="form-control datepicker" name="dateOfProcurement" required>
+                    <label>
+                    Date of Procurement:
+                    </label>
+                    <input type="text" class="form-control datepicker" name="dateOfProcurement" required>
                     </div>
                     <div class="form-group">
-                        <label>Quantity/Copies:</label>
-                        <input type="number" class="form-control" name="quantity" value="1" required>
+                    <label>Quantity/Copies:</label>
+                    <input type="number" class="form-control" name="quantity" value="1" required>
                     </div>
                     <button type="submit" class="btn btn-primary" onclick="confirmAddBook_Movies()">Confirm</button>
                     <button type="button" class="btn btn-secondary" onclick="cancelAddBook_Movies()">Cancel</button>
                 </form>
             </div>
+
+            <!-- Update Book/Movies Form -->
+            <div id="updateBookMoviesForm" style="display:none;">
+                <h4>Update Book/Movies</h4>
+                <form action="UpdateBookMovies.jsp" method="post" id="">
+                    <!-- Form fields for updating book/movies -->
+                    <div class="form-group">
+                    <label>Book/Movies:</label>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="updateBookOrMovie" id="updateBook" value="Book" checked>
+                    <label class="form-check-label" for="updateBook">
+                    Book
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="updateBookOrMovie" id="updateMovie" value="Movie">
+                    <label class="form-check-label" for="updateMovie">
+                    Movie
+                    </label>
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <label>Book/Movie Name:</label>
+                    <input type="text" class="form-control" name="updateBookMovieName" required>
+                    </div>
+                    <div class="form-group">
+                    <label>Serial No.:</label>
+                    <select class="form-control" name="serialNo" required>
+                    <%
+                    try {
+                    // Database connection and query to fetch serial numbers
+                    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "Abhinav2024");
+                    Statement stmt = conn.createStatement();
+                    ResultSet rs = stmt.executeQuery("SELECT serial_no FROM books_movies");
+                    while(rs.next()) {
+                    String serialNo = rs.getString("serial_no");
+                    %>
+                    <option value="<%= serialNo %>"><%= serialNo %></option>
+                    <%
+                    }
+                    rs.close();
+                    stmt.close();
+                    conn.close();
+                    } catch(Exception e) {
+                    e.printStackTrace();
+                    }
+                    %>
+                                                <!-- Serial numbers will be fetched from database -->
+                                                <%-- Include Java code to fetch serial numbers from database here --%>
+                                                </select>
+                                                </div>
+                                                <div class="form-group">
+                                            <label>Status:</label>
+                                            <select class="form-control" name="status" required>
+                                                <option value="Available">Available</option>
+                                                <option value="Unavailable">Unavailable</option>
+                                                <option value="Removed">Removed</option>
+                                                <option value="On Repair">On Repair</option>
+                                                <option value="To Replace">To Replace</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Date:</label>
+                                            <input type="text" class="form-control datepicker" name="date" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Confirm</button>
+                                        <button type="button" class="btn btn-secondary" onclick="cancelUpdateBook_Movies()">Cancel</button>
+                </form>
+            </div>
         </div>
     </div>
+    <br>
+    <!--Books and Movies Section End-->
+    <!--user Management Section Start-->
+<div class="row">
+    <!-- User Management -->
+    <div class="col-md-4">
+        <h4>User Management</h4>
+        <button class="btn btn-success mb-2" onclick="showAddUserForm()">Add</button>
+        <button class="btn btn-warning mb-2" onclick="showUpdateUserForm()">Update</button>
+    </div>
+
+    <!-- Add User Form -->
+    <div class="col-md-8">
+       <div id="addUserForm" style="display:none;">
+           <h4>Add User</h4>
+           <form action="addUserAdmin.jsp" method="post">
+               <!-- Form fields for adding user -->
+               <div class="form-group">
+                   <label>New User/Existing User:</label>
+                   <div class="form-check">
+                       <input class="form-check-input" type="radio" name="userType" id="newUser" value="New User" checked>
+                       <label class="form-check-label" for="newUser">
+                           New User
+                       </label>
+                   </div>
+                   <div class="form-check">
+                       <input class="form-check-input" type="radio" name="userType" id="existingUser" value="Existing User">
+                       <label class="form-check-label" for="existingUser">
+                           Existing User
+                       </label>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label>Name:</label>
+                   <input type="text" class="form-control" name="userName" required>
+               </div>
+               <div class="form-group">
+                   <label>Status:</label>
+                   <div class="form-check">
+                       <input class="form-check-input" type="checkbox" name="status" id="active" value="Active">
+                       <label class="form-check-label" for="active">
+                           Active
+                       </label>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label>Admin:</label>
+                   <div class="form-check">
+                       <input class="form-check-input" type="checkbox" name="isAdmin" id="admin" value="Admin">
+                       <label class="form-check-label" for="admin">
+                           Admin
+                       </label>
+                   </div>
+               </div>
+               <button type="submit" class="btn btn-primary" onclick="confirmAddUser()">Confirm</button>
+               <button type="button" class="btn btn-secondary" onclick="cancelAddUser()">Cancel</button>
+           </form>
+       </div>
+
+        <!-- Update User Form -->
+        <div id="updateUserForm" style="display:none;">
+            <h4>Update User</h4>
+            <form action="updateUser.jsp" method="post">
+                <!-- Form fields for updating user -->
+                <div class="form-group">
+                    <label>User ID:</label>
+                    <input type="text" class="form-control" name="userID" required>
+                </div>
+                <div class="form-group">
+                    <label>New Contact No.:</label>
+                    <input type="text" class="form-control" name="newContactNo" required>
+                </div>
+                <div class="form-group">
+                    <label>New Contact Address:</label>
+                    <input type="text" class="form-control" name="newContactAddress" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Confirm</button>
+                <button type="button" class="btn btn-secondary" onclick="cancelUpdateUser()">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showAddUserForm() {
+        document.getElementById("addUserForm").style.display = "block";
+        document.getElementById("updateUserForm").style.display = "none";
+    }
+
+    function showUpdateUserForm() {
+        document.getElementById("addUserForm").style.display = "none";
+        document.getElementById("updateUserForm").style.display = "block";
+    }
+
+    function cancelAddUser() {
+        document.getElementById("addUserForm").style.display = "none";
+    }
+
+    function cancelUpdateUser() {
+        document.getElementById("updateUserForm").style.display = "none";
+    }
+    function confirmAddUser() {
+        var userType = document.querySelector('input[name="userType"]:checked');
+        var userName = document.querySelector('input[name="userName"]').value;
+        var status = document.querySelector('input[name="status"]:checked');
+        var isAdmin = document.querySelector('input[name="isAdmin"]:checked');
+
+        if (!userType || !userName) {
+            alert("Please fill in all the required fields.");
+            return false; // Prevent form submission
+        }
+
+        // Convert radio button values to strings
+        userType = userType.value;
+        status = status ? 'Active' : 'Inactive';
+        isAdmin = isAdmin ? 'Admin' : 'User';
+
+        var message = "Are you sure you want to add the following user?\n\n" +
+                      "User Type: " + userType + "\n" +
+                      "Name: " + userName + "\n" +
+                      "Status: " + status + "\n" +
+                      "Admin: " + isAdmin;
+
+        var confirmAction = confirm(message);
+
+        if (confirmAction) {
+            return true; // Allow form submission
+        } else {
+            return false; // Prevent form submission
+        }
+    }
+
+
+</script>
+
+
+    <!--User Management Section End-->
 
     <script>
-        function showAddBook_Movies() {
-            document.getElementById('addBookMoviesForm').style.display = 'block';
+        function showAddBookMoviesForm() {
+            document.getElementById("addBookMoviesForm").style.display = "block";
+            document.getElementById("updateBookMoviesForm").style.display = "none";
         }
 
-        function showUpdateBook_Movies() {
-            // Logic to show update form
+        function showUpdateBookMoviesForm() {
+            document.getElementById("addBookMoviesForm").style.display = "none";
+            document.getElementById("updateBookMoviesForm").style.display = "block";
         }
+    </script>
 
+
+    <script>
         function cancelAddBook_Movies() {
             document.getElementById('addBookMoviesForm').style.display = 'none';
         }
