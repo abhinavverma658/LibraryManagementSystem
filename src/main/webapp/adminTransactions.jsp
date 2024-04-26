@@ -322,26 +322,41 @@ function submitIssueBook() {
 
 // Add this JavaScript code after the previous JavaScript code in the same <script> tag
 
-function checkAvailability() {
-    var bookName = $('#bookNameCheck').val();
-    var author = $('#authorCheck').val();
+ function checkAvailability() {
+        // Get selected book and author
+        var selectedBook = document.getElementById('bookNameCheck').value.trim().toLowerCase();
+        var selectedAuthor = document.getElementById('authorCheck').value.trim().toLowerCase();
 
-    // AJAX call to check book availability
-    $.ajax({
-        url: 'checkAvailabilityServlet', // Replace with your servlet URL
-        type: 'POST',
-        data: {
-            bookName: bookName,
-            author: author
-        },
-        success: function(response) {
-            alert(response);
-        },
-        error: function(error) {
-            alert('Error: ' + error);
+        // Assume database is represented by a JavaScript object
+        var database = [
+            { book: 'Book 1', author: 'Author 1', availability: true, details: 'Details of Book 1' },
+            { book: 'Book 2', author: 'Author 2', availability: false, details: 'Details of Book 2' },
+            // Add more book entries as needed
+        ];
+
+        // Search for the book in the database
+        var bookFound = false;
+        var bookDetails = '';
+        for (var i = 0; i < database.length; i++) {
+            if (database[i].book.trim().toLowerCase() === selectedBook && database[i].author.trim().toLowerCase() === selectedAuthor) {
+                bookFound = true;
+                bookDetails = database[i].details;
+                break;
+            }
         }
-    });
-}
+
+        // If book is found, display details in a new tab
+        if (bookFound) {
+            var newTab = window.open('', '_blank');
+            newTab.document.write('<h3>Book Details</h3>');
+            newTab.document.write('<p>' + bookDetails + '</p>');
+        } else {
+            alert('Book not found in the database.');
+        }
+
+        // Prevent form submission
+        return false;
+    }
 
 
 function goBack() {
